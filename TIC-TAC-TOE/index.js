@@ -25,36 +25,10 @@ class TicTacToe {
     return available;
   }
 
-  click = (c, i) => {
-    if (this.board[i] === '' && this.winner === '') {
-      c.innerText = this.players[1];
-      this.board[i] = this.players[1];
-
-      let win = this.checkWin(i);
-      this.checkGameState(win, this.players[1]);
-    }
-  }
-
-  startGame = () => {
-    restartBtn.addEventListener('click', this.reset);
-
-    form.addEventListener('submit', e => {
-      e.preventDefault();
-      let index = form['player-move'].value;
-      this.click(cells[index], index);
-      form['player-move'].value = '';
-    });
-  }
-
-  endGame = player => {
-    gameStatus.style.opacity = 1;
-    if (player) {
-      this.winner = player;
-      gameStatus.innerText = `${player} won!`;
-    } else {
-      this.winner = 'tie';
-      gameStatus.innerText = 'Game ended in a tie!';
-    }
+  checkGameState = (win, player) => {
+    let spaces = this.availableSpaces();
+    if (win || spaces === 0) this.endGame(win && player);
+    else player === this.players[1] && this.makeMove();
   }
 
   checkWin = pos => {
@@ -77,10 +51,33 @@ class TicTacToe {
     return false;
   }
 
-  checkGameState = (win, player) => {
-    let spaces = this.availableSpaces();
-    if (win || spaces === 0) this.endGame(win && player);
-    else player === this.players[1] && this.makeMove();
+  startGame = () => {
+    restartBtn.addEventListener('click', this.reset);
+  
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      let index = form['player-move'].value;
+
+      if (this.board[index] === '' && this.winner === '') {
+        cells[index].innerText = this.players[1];
+        this.board[index] = this.players[1];
+  
+        let win = this.checkWin(index);
+        this.checkGameState(win, this.players[1]);
+      }
+      form['player-move'].value = '';
+    });
+  }
+
+  endGame = player => {
+    gameStatus.style.opacity = 1;
+    if (player) {
+      this.winner = player;
+      gameStatus.innerText = `${player} won!`;
+    } else {
+      this.winner = 'tie';
+      gameStatus.innerText = 'Game ended in a tie!';
+    }
   }
 
   makeMove = () => {
