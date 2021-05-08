@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300&display=swap" rel="stylesheet">
+  <title>Question 3</title>
+</head>
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    font-size: 23px;
+    font-family: "Montserrat", sans-serif;
+  }
+
+  .container {
+    max-width: 800px;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 30px 0px;
+  }
+
+  td,
+  th {
+    border: 1px solid black;
+    text-align: center;
+    padding: 10px 15px;
+    font-weight: 300;
+  }
+
+  td {
+    letter-spacing: 2.5px;
+  }
+
+  .most-occuring {
+    color: rgb(231, 97, 80);
+  }
+</style>
+<body>
+
+  <div class="container">
+    <p>The table below shows the number of times each sum occurs and the probability of occurrence.</p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>sum</th>
+          <th>number of occurrences</th>
+          <th>probability</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+
+    <p class="most">
+      <span class="most-occuring"></span> is the most probable sum since it has the highest probability.
+    </p>
+  </div>
+  
+  <script>
+
+    function findSum() {
+      /* 
+        the find function calls itself recursively, picking a random card from the cards array and 
+        summing up the number on each card until the sum exceeds 124
+      */
+      let cards = [1, 2, 3, 4, 5, 6, 7];
+      const find = (current) => {
+        if (cards.length === 0 || current > 124) {
+          return current;
+        }
+
+        /* pick a random card from the array */
+        let index = Math.floor(cards.length * Math.random());
+        let card = cards.splice(index, 1); 
+        let number = Math.pow(2, card - 1);
+
+        return find(current + number);
+      } 
+      return find(0);
+    }
+
+    function getResults(times) {
+      let results = [];
+      for (let i = 0; i < times; i++) {
+        let sum = findSum();
+        results.push(sum); /* adds the result to the results array */
+      }
+      
+      return results;
+    }
+
+    function getProbabilities(results) {
+      const numbers = {};
+      const probabilities = {};
+
+      for (let r of results) {
+        if (Object.keys(numbers).includes(String(r))) {
+          numbers[r] += 1;
+        } else {
+          numbers[r] = 1; 
+        }
+      }
+
+      for (let n in numbers) {
+        /* probability of occurrence to three decimal places */
+        let probability = Math.round(numbers[n] / results.length * 1000) / 1000;
+        probabilities[n] = probability;
+      }
+
+      return probabilities;
+    }
+
+    function displayResults(results) {
+      let max = Math.max(...Object.values(results));
+      let most = Object.keys(results).find(p => results[p] === max);
+
+      let html = '';
+      for (let p in results) {
+        html += `
+        <tr>
+          <td>${p}</td>
+          <td>${(Math.round(results[p] * 5040))}</td>
+          <td>${results[p]}</td>
+        </tr>`;
+      }
+      document.querySelector('tbody').innerHTML += html;
+      document.querySelector('.most-occuring').innerHTML += `<span> ${most}</span>`;
+    }
+
+    let sums = getResults(5040); /* results from picking the cards randomly 5040 times */
+    let results = getProbabilities(sums); /* finds the probability of occurrence for all sums */
+    console.log('results: ', results);
+
+    displayResults(results);
+    
+  </script>
+
+</body>
+</html>
