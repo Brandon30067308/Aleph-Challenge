@@ -48,7 +48,7 @@
   }
 
   .most-occuring {
-    color: rgb(231, 97, 80);
+    color: rgb(28, 183, 255);
   }
 </style>
 <body>
@@ -96,58 +96,68 @@
     }
 
     function getResults(times) {
-      let results = [];
+      let sums = [];
       for (let i = 0; i < times; i++) {
         let sum = findSum();
-        results.push(sum); /* adds the result to the results array */
+        sums.push(sum); /* adds the result to the results array */
       }
       
-      return results;
+      return sums;
     }
 
-    function getProbabilities(results) {
-      const numbers = {};
-      const probabilities = {};
-
+    function getNumberOfOccurrences(results) {
+      let occurrences = {};
       for (let r of results) {
-        if (Object.keys(numbers).includes(String(r))) {
-          numbers[r] += 1;
+        if (Object.keys(occurrences).includes(String(r))) {
+          occurrences[r] += 1;
         } else {
-          numbers[r] = 1; 
+          occurrences[r] = 1; 
         }
       }
+      return occurrences;
+    }
 
-      for (let n in numbers) {
+    function getProbabilities(occurrences, sums) {
+      const probabilities = {};
+
+      for (let n in occurrences) {
         /* probability of occurrence to three decimal places */
-        let probability = Math.round(numbers[n] / results.length * 1000) / 1000;
+        let probability = Math.round(occurrences[n] / sums.length * 1000) / 1000;
         probabilities[n] = probability;
       }
 
       return probabilities;
     }
 
-    function displayResults(results) {
+    function displayResults(results, occurrences) {
       let max = Math.max(...Object.values(results));
+      
+      /* most occurring sum */
       let most = Object.keys(results).find(p => results[p] === max);
 
       let html = '';
       for (let p in results) {
         html += `
-        <tr>
-          <td>${p}</td>
-          <td>${(Math.round(results[p] * 5040))}</td>
-          <td>${results[p]}</td>
-        </tr>`;
+          <tr>
+            <td>${p}</td>
+            <td>${occurrences[p]}</td>
+            <td>${results[p]}</td>
+          </tr>`;
       }
       document.querySelector('tbody').innerHTML += html;
-      document.querySelector('.most-occuring').innerHTML += `<span> ${most}</span>`;
+      document.querySelector('.most-occuring').innerText = most;
     }
 
-    let sums = getResults(5040); /* results from picking the cards randomly 5040 times */
-    let results = getProbabilities(sums); /* finds the probability of occurrence for all sums */
-    console.log('results: ', results);
+    /* all sums from picking the cards randomly 5040 times */
+    const sums = getResults(5040); 
 
-    displayResults(results);
+    /* number of times each sum occurs */
+    const occurrences = getNumberOfOccurrences(sums);
+
+    /* finds the probability of occurrence for all sums */
+    const probabilities = getProbabilities(occurrences, sums);
+
+    displayResults(probabilities, occurrences);
     
   </script>
 
