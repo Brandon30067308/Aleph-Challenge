@@ -16,15 +16,18 @@ class TicTacToe {
         }
   }
 
-  equals = (a, b, c) => a !== '' && a === b && a === c;
+  startGame = () => {
+    restartBtn.addEventListener('click', this.reset);
 
-  updateBoard = (pos, player) => {
-    this.board[pos] = player;
-    cells[pos].innerText = player;
+    playBtn.addEventListener('click', this.handleClick);
+
+    cells.forEach((cell, i) => {
+      cell.addEventListener('click', () => this.handleClick(i))
+    });
   }
 
-  handleClick = () => {
-    let pos = input.value - 1;
+  handleClick = index => {
+    let pos = index || input.value - 1;
 
     if (this.board[pos] === '' && this.winner === '') {
       this.updateBoard(pos, this.players[1]);
@@ -33,6 +36,13 @@ class TicTacToe {
       this.checkGameState(win, this.players[1]);
     }
     input.value = '';
+  }
+
+  equals = (a, b, c) => a !== '' && a === b && a === c;
+
+  updateBoard = (pos, player) => {
+    this.board[pos] = player;
+    cells[pos].innerText = player;
   }
 
   availableSpaces = () => {
@@ -143,3 +153,4 @@ class TicTacToe {
 } 
 
 const tictactoe = new TicTacToe();
+tictactoe.startGame();
