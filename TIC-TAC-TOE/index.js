@@ -1,4 +1,5 @@
-const form = document.querySelector('form');
+const playBtn = document.querySelector('.play-btn');
+const input = document.querySelector('input');
 const restartBtn = document.querySelector('.restart-btn');
 const cells = document.querySelectorAll('td');
 const gameStatus = document.querySelector('.game-status');
@@ -25,9 +26,8 @@ class TicTacToe {
   startGame = () => {
     restartBtn.addEventListener('click', this.reset);
   
-    form.addEventListener('submit', e => {
-      e.preventDefault();
-      let pos = form['player-move'].value - 1;
+    playBtn.addEventListener('click', () => {
+      let pos = input.value - 1;
 
       if (this.board[pos] === '' && this.winner === '') {
         this.updateBoard(pos, this.players[1]);
@@ -35,7 +35,7 @@ class TicTacToe {
         let win = this.checkWin(pos);
         this.checkGameState(win, this.players[1]);
       }
-      form['player-move'].value = '';
+      input.value = '';
     });
   }
 
