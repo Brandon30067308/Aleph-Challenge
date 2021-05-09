@@ -26,17 +26,20 @@ class TicTacToe {
   startGame = () => {
     restartBtn.addEventListener('click', this.reset);
   
-    playBtn.addEventListener('click', () => {
-      let pos = input.value - 1;
+    playBtn.addEventListener('click', this.handleClick);
+    playBtn.addEventListener('touch-start', this.handleClick);
+  }
 
-      if (this.board[pos] === '' && this.winner === '') {
-        this.updateBoard(pos, this.players[1]);
-  
-        let win = this.checkWin(pos);
-        this.checkGameState(win, this.players[1]);
-      }
-      input.value = '';
-    });
+  handleClick = () => {
+    let pos = input.value - 1;
+
+    if (this.board[pos] === '' && this.winner === '') {
+      this.updateBoard(pos, this.players[1]);
+
+      let win = this.checkWin(pos);
+      this.checkGameState(win, this.players[1]);
+    }
+    input.value = '';
   }
 
   availableSpaces = () => {
