@@ -23,13 +23,6 @@ class TicTacToe {
     cells[pos].innerText = player;
   }
 
-  startGame = () => {
-    restartBtn.addEventListener('click', this.reset);
-  
-    playBtn.addEventListener('click', this.handleClick);
-    playBtn.addEventListener('touch-start', this.handleClick);
-  }
-
   handleClick = () => {
     let pos = input.value - 1;
 
@@ -150,4 +143,3 @@ class TicTacToe {
 } 
 
 const tictactoe = new TicTacToe();
-tictactoe.startGame();
