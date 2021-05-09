@@ -6,6 +6,7 @@ const gameStatus = document.querySelector('.game-status');
 
 class TicTacToe {
   constructor() {
+    this.active = false;
     this.players = ['X', 'O'];
     this.board = ['', '', '', '', 'X', '', '', '', ''];
     this.winner = '';
@@ -17,6 +18,7 @@ class TicTacToe {
   }
 
   startGame = () => {
+    this.active = true;
     restartBtn.addEventListener('click', this.reset);
 
     playBtn.addEventListener('click', () => this.handleClick());
@@ -27,15 +29,17 @@ class TicTacToe {
   }
 
   handleClick = index => {
-    let pos = index !== undefined ? index : input.value - 1;
+    if (this.active) {
+      let pos = index !== undefined ? index : input.value - 1;
 
-    if (this.board[pos] === '' && this.winner === '') {
-      this.updateBoard(pos, this.players[1]);
+      if (this.board[pos] === '' && this.winner === '') {
+        this.updateBoard(pos, this.players[1]);
 
-      let win = this.checkWin(pos);
-      this.checkGameState(win, this.players[1]);
+        let win = this.checkWin(pos);
+        this.checkGameState(win, this.players[1]);
+      }
+      input.value = '';
     }
-    input.value = '';
   }
 
   equals = (a, b, c) => a !== '' && a === b && a === c;
