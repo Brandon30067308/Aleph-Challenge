@@ -17,6 +17,28 @@ class TicTacToe {
 
   equals = (a, b, c) => a !== '' && a === b && a === c;
 
+  updateBoard = (pos, player) => {
+    this.board[pos] = player;
+    cells[pos].innerText = player;
+  }
+
+  startGame = () => {
+    restartBtn.addEventListener('click', this.reset);
+  
+    form.addEventListener('submit', e => {
+      e.preventDefault();
+      let pos = form['player-move'].value - 1;
+
+      if (this.board[pos] === '' && this.winner === '') {
+        this.updateBoard(pos, this.players[1]);
+  
+        let win = this.checkWin(pos);
+        this.checkGameState(win, this.players[1]);
+      }
+      form['player-move'].value = '';
+    });
+  }
+
   availableSpaces = () => {
     let available = 0;
     for (let i = 0; i < this.board.length; i++) {
@@ -28,7 +50,7 @@ class TicTacToe {
   checkGameState = (win, player) => {
     let spaces = this.availableSpaces();
     if (win || spaces === 0) this.endGame(win && player);
-    else player === this.players[1] && this.makeMove();
+    else if (player === this.players[1]) this.makeMove();
   }
 
   checkWin = pos => {
@@ -36,8 +58,8 @@ class TicTacToe {
     let rowPos = Math.floor(pos / 3);
     let colPos = pos - 3 * rowPos;
 
-    const row = board.slice(rowPos * 3, rowPos * 3 + 3);
-    const column = [this.board[colPos], board[colPos + 3], this.board[colPos + 6]];
+    let row = board.slice(rowPos * 3, rowPos * 3 + 3);
+    let column = [this.board[colPos], board[colPos + 3], this.board[colPos + 6]];
 
     /* all row or column elements are thesame */
     if (this.equals(...row) || this.equals(...column)) return true;
@@ -49,24 +71,6 @@ class TicTacToe {
     }
 
     return false;
-  }
-
-  startGame = () => {
-    restartBtn.addEventListener('click', this.reset);
-  
-    form.addEventListener('submit', (e) => {
-      e.preventDefault();
-      let index = form['player-move'].value;
-
-      if (this.board[index] === '' && this.winner === '') {
-        cells[index].innerText = this.players[1];
-        this.board[index] = this.players[1];
-  
-        let win = this.checkWin(index);
-        this.checkGameState(win, this.players[1]);
-      }
-      form['player-move'].value = '';
-    });
   }
 
   endGame = player => {
@@ -99,8 +103,7 @@ class TicTacToe {
     }
 
     let pos = move.i * 3 + move.j;
-    this.board[pos] = this.players[0];
-    cells[pos].innerText = this.players[0];
+    this.updateBoard(pos, this.players[0]);
 
     let win = this.checkWin(pos);
     this.checkGameState(win, this.players[0]);
@@ -126,6 +129,7 @@ class TicTacToe {
           this.board[pos] = isMaximizing ? this.players[0] : this.players[1];
           let score = this.minimax(!isMaximizing, pos);
           this.board[pos] = '';
+
           if (isMaximizing) bestScore = Math.max(bestScore, score);
           else bestScore = Math.min(bestScore, score);
         }
