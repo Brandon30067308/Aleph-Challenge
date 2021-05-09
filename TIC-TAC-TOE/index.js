@@ -17,9 +17,9 @@ class TicTacToe {
         }
   }
 
-  startGame = () => {
+  startGame() {
     this.active = true;
-    restartBtn.addEventListener('click', this.reset);
+    restartBtn.addEventListener('click', () => this.reset());
 
     playBtn.addEventListener('click', () => this.handleClick());
 
@@ -28,7 +28,7 @@ class TicTacToe {
     });
   }
 
-  handleClick = index => {
+  handleClick(index) {
     if (this.active) {
       let pos = index !== undefined ? index : input.value - 1;
 
@@ -42,14 +42,16 @@ class TicTacToe {
     }
   }
 
-  equals = (a, b, c) => a !== '' && a === b && a === c;
+  equals (a, b, c) {
+    return a !== '' && a === b && a === c;
+  }
 
-  updateBoard = (pos, player) => {
+  updateBoard(pos, player) {
     this.board[pos] = player;
     cells[pos].innerText = player;
   }
 
-  availableSpaces = () => {
+  availableSpaces() {
     let available = 0;
     for (let i = 0; i < this.board.length; i++) {
       if (this.board[i] === '') available += 1;
@@ -57,13 +59,13 @@ class TicTacToe {
     return available;
   }
 
-  checkGameState = (win, player) => {
+  checkGameState(win, player) {
     let spaces = this.availableSpaces();
     if (win || spaces === 0) this.endGame(win && player);
     else if (player === this.players[1]) this.makeMove();
   }
 
-  checkWin = pos => {
+  checkWin(pos) {
     let board = [...this.board];
     let rowPos = Math.floor(pos / 3);
     let colPos = pos - 3 * rowPos;
@@ -83,7 +85,7 @@ class TicTacToe {
     return false;
   }
 
-  endGame = player => {
+  endGame(player) {
     gameStatus.style.opacity = 1;
     if (player) {
       this.winner = player;
@@ -94,7 +96,7 @@ class TicTacToe {
     }
   }
 
-  makeMove = () => {
+  makeMove() {
     let bestScore = -Infinity;
     let move;
     for (let i = 0; i < 3; i++) {
@@ -119,7 +121,7 @@ class TicTacToe {
     this.checkGameState(win, this.players[0]);
   }
 
-  minimax = (isMaximizing, pos) => {
+  minimax(isMaximizing, pos) {
     let player = isMaximizing ? this.players[1] : this.players[0];
     let win = this.checkWin(pos);
     let spaces = this.availableSpaces();
@@ -131,7 +133,7 @@ class TicTacToe {
     return isMaximizing ? this.loop(-Infinity, true) : this.loop(Infinity, false); 
   }
 
-  loop = (bestScore, isMaximizing) => {
+  loop(bestScore, isMaximizing) {
     for (let i = 0; i < 3; i++) {
       for (let j = 0; j < 3; j++) {
         let pos = i * 3 + j;
@@ -148,7 +150,7 @@ class TicTacToe {
     return bestScore;
   }
 
-  reset = () => {
+  reset() {
     this.board = ['', '', '', '', 'X', '', '', '', ''];
     this.winner = '';
     cells.forEach((c, i) => c.innerText = i !== 4 ? '' : 'X');
