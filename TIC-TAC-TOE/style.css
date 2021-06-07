@@ -5,8 +5,7 @@
 }
 
 body {
-  color: rgb(65, 65, 65);
-  font-family: "Montserrat", sans-serif;
+  font-family: "Nunito", sans-serif;
   margin: 20px 5px;
 }
 
@@ -37,6 +36,7 @@ td {
   width: calc(100% / 3);
   height: calc(100% / 3);
   text-align: center;
+  font-family: "Nunito", sans-serif;
 }
 
 button {
@@ -50,7 +50,8 @@ button,
 p,
 input {
   font-size: 22px;
-  font-family: "Montserrat", sans-serif;
+  font-family: "Nunito", sans-serif;
+  outline: none;
 }
 
 .game-status {
@@ -64,6 +65,10 @@ input {
   height: 45px;
   width: 120px;
   padding: 7px;
+}
+
+body .error {
+  border: 1px solid rgb(243, 114, 114);
 }
 
 @media (max-width: 400px) {
