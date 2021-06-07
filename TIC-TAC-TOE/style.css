@@ -67,10 +67,6 @@ input {
   padding: 7px;
 }
 
-body .error {
-  border: 1px solid rgb(243, 114, 114);
-}
-
 @media (max-width: 400px) {
   table {
     width: 210px;
@@ -82,7 +78,7 @@ body .error {
   button,
   p,
   input {
-    font-size: 15px;
+    font-size: 17px;
   }
   input,
   .play-btn {
