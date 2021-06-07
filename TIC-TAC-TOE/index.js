@@ -17,8 +17,6 @@ class TicTacToe {
   }
 
   startGame() {
-    input.onfocus = () => input.classList.remove('error');
-
     restartBtn.addEventListener('click', () => this.reset());
 
     playBtn.addEventListener('click', () => this.handleClick());
@@ -36,8 +34,6 @@ class TicTacToe {
 
       let win = this.checkWin(pos);
       this.checkGameState(win, this.players[1]);
-    } else {
-      input.classList.add('error');
     }
 
     input.value = '';
@@ -152,7 +148,6 @@ class TicTacToe {
   }
 
   reset() {
-    input.classList.remove('error');
     this.board = ['', '', '', '', 'X', '', '', '', ''];
     this.winner = '';
     cells.forEach((c, i) => c.innerText = i !== 4 ? '' : 'X');
