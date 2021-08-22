@@ -32,7 +32,7 @@ function getResults(times) {
 function getNumberOfOccurrences(results) {
   let occurrences = {};
   for (let r of results) {
-    if (Object.keys(occurrences).includes(String(r))) {
+    if (Object.keys(occurrences).includes(r.toString())) {
       occurrences[r] += 1;
     } else {
       occurrences[r] = 1; 

@@ -44,6 +44,12 @@ button {
   width: 140px;
   height: 50px;
   cursor: pointer;
+  /* border-radius: 0.35rem; */
+  border: 1px solid rgba(135, 135, 135, 0.5);
+}
+
+button:hover {
+  background-color: rgb(235, 235, 235);
 }
 
 .play-btn {
@@ -60,6 +66,14 @@ input {
   font-size: 22px;
   font-family: "Nunito", sans-serif;
   outline: none;
+}
+
+input {
+  border: 1px solid rgba(135, 135, 135, 0.5);
+}
+
+input:focus {
+  border-color: rgb(65, 65, 65);
 }
 
 .game-status {
